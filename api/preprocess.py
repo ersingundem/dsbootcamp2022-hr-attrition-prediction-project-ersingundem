@@ -14,23 +14,20 @@ with open("preprocessors/StandardScaler.pkl", "rb") as f:
 
 # TODO
 COLUMNS_TO_REMOVE = [
-'MonthlyIncome', 'Department_Sales', 'JobRole_Human Resources', 'JobRole_Sales Executive'
+    "Over18",
+    "EmployeeCount",
+    "EmployeeNumber"
 ]
 
 # TODO
 COLUMNS_TO_ONEHOT_ENCODE = [
-'BusinessTravel_0', 'BusinessTravel_1', 'BusinessTravel_2',
-       'Department_Human Resources', 'Department_Research & Development',
-       'Department_Sales', 'EducationField_Human Resources',
-       'EducationField_Life Sciences', 'EducationField_Marketing',
-       'EducationField_Medical', 'EducationField_Other',
-       'EducationField_Technical Degree', 'Gender_Male',
-       'JobRole_Healthcare Representative', 'JobRole_Human Resources',
-       'JobRole_Laboratory Technician', 'JobRole_Manager',
-       'JobRole_Manufacturing Director', 'JobRole_Research Director',
-       'JobRole_Research Scientist', 'JobRole_Sales Executive',
-       'JobRole_Sales Representative', 'MaritalStatus_Divorced',
-       'MaritalStatus_Married', 'MaritalStatus_Single', 'OverTime_Yes'
+"BusinessTravel",
+    "Department",
+    "EducationField",
+    "Gender",
+    "JobRole",
+    "MaritalStatus",
+    "OverTime"
 ]
 
 
@@ -65,8 +62,11 @@ def encode_columns(df: pd.DataFrame) -> pd.DataFrame:
 def create_features(df: pd.DataFrame) -> pd.DataFrame:
     # create MeanAttritionYear feature
     df["MeanAttritionYear"] = df["TotalWorkingYears"] / (df["NumCompaniesWorked"] + 1)
-
-    # TODO
+    # create YearsAtCompanyCat
+    bins = pd.IntervalIndex.from_tuples([(-1, 5), (5, 10), (10, 15), (15, 100)])
+    cat_YearsAtCompany = pd.cut(df["YearsAtCompany"].to_list(), bins)
+    cat_YearsAtCompany.categories = [0, 1, 2, 3]
+    df["YearsAtCompanyCat"] = cat_YearsAtCompany
 
     return df
 

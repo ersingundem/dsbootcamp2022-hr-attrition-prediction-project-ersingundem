@@ -1,10 +1,10 @@
 import pickle
 
 # TODO
-model_path = 'models/logistic_regression.pkl'
 
 
-with open(model_path, 'rb') as f:
+
+with open('models/logistic_regression.pkl', 'rb') as f:
     model = pickle.load(f)
 
 
